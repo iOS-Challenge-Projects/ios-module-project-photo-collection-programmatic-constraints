@@ -10,7 +10,14 @@ import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
 
-    var photo: Photo?
+    var photo: Photo?{
+        didSet{
+            updateViews()
+        }
+    }
+    
+    private var imageView: UIImageView!
+    private var label: UILabel!
     
     func setUpSubviews() {
         
@@ -70,7 +77,28 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         addSubview(label)
         
-        label
+        NSLayoutConstraint(item: label,
+                           attribute: .top,
+                           relatedBy: .equal,
+                           toItem: self,
+                           attribute: .bottom,
+                           multiplier: 1,
+            constant: 4).isActive = true
+        
+        NSLayoutConstraint(item: label,
+                       attribute: .leading,
+                       relatedBy: .equal,
+                       toItem: self,
+                       attribute: .leading,
+                       multiplier: 1,
+        constant: 2).isActive = true
+    }
+    
+    func updateViews() {
+        if let photo = photo {
+            imageView.image = UIImage(data: photo.imageData)
+            label.text = photo.title
+        }
         
     }
 }
